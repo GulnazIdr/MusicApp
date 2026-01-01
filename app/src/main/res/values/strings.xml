@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CoroutineApp</string>
+    <string name="profile">Профиль</string>
+    <string name="music">Песни</string>
+</resources>
