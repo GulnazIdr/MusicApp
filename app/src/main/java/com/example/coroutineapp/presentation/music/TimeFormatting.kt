@@ -1,11 +1,12 @@
-//package com.example.coroutineapp.presentation.music
-//
-//import java.time.Duration
-//
-//
-//fun formatDuration(seconds: Int): String {
-//    val duration = Duration. seconds(seconds.toDouble())
-//    val minutes = duration.inWholeMinutes
-//    val remainingSeconds = duration.inWholeSeconds % 60
-//    return String.format("%02d:%02d", minutes, remainingSeconds)
-//}
+package com.example.coroutineapp.presentation.music
+
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
+
+fun Int.formatDuration(): String {
+    val minutes = TimeUnit.MILLISECONDS.toMinutes(this.toLong())
+    val seconds = TimeUnit.MILLISECONDS.toSeconds(this.toLong()) % 60
+    return "0$minutes:0${seconds}"
+    //return String.format("%d:%02d", minutes, seconds)
+}

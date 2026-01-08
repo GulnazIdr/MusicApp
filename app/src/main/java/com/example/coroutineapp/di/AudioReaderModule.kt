@@ -1,11 +1,13 @@
 package com.example.coroutineapp.di
 
 import android.content.Context
+import android.media.MediaPlayer
+import android.os.Build
+import android.provider.MediaStore
 import com.example.coroutineapp.data.AudioReader
 import com.example.coroutineapp.data.FileRepositoryImpl
 import com.example.coroutineapp.domain.FileRepository
-import com.example.coroutineapp.presentation.models.MusicListUi
-import com.example.coroutineapp.presentation.models.MusicUI
+import com.example.coroutineapp.presentation.music.AudioFocusListener
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +32,13 @@ class AudioReaderModule {
     ): FileRepository{
         return FileRepositoryImpl(audioReader)
     }
+
+    @Singleton
+    @Provides
+    fun provideAudioFocusListener(
+        @ApplicationContext context: Context
+    ): AudioFocusListener =
+        AudioFocusListener(context)
+
 
 }

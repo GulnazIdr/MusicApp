@@ -7,7 +7,7 @@ data class MusicDto(
     val id: Long,
     val musicName: String,
     val singerName: String,
-    val duration: String,
+    val duration: Int,
     var cover: Bitmap?,
     val contentUri: Uri
 )

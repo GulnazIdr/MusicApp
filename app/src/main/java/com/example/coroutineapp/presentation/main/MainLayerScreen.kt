@@ -17,7 +17,7 @@ import com.example.coroutineapp.presentation.navigation.BottomNavigationGraph
 
 @Composable
 fun MainLayerScreen(
-    onMusic: (musicId: Long) -> Unit,
+    onMusic: (musicId: Long) -> Unit
 ) {
     val navController = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -37,7 +37,7 @@ fun MainLayerScreen(
                 start = 20.dp, end = 20.dp, top = padding.calculateTopPadding()
             ),
             navController = navController,
-            onMusic = {onMusic(it)}
+            onMusic = {onMusic(it)},
         )
     }
 }

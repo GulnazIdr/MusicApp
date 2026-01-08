@@ -7,7 +7,7 @@ data class Music(
     val id: Long,
     val musicName: String,
     val singerName: String,
-    val duration: String,
+    val duration: Int,
     val image: Bitmap?,
     val uri: Uri
 )

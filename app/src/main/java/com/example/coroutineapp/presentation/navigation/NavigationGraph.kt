@@ -1,5 +1,7 @@
 package com.example.coroutineapp.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -9,6 +11,7 @@ import androidx.navigation.toRoute
 import com.example.coroutineapp.presentation.main.MainLayerScreen
 import com.example.coroutineapp.presentation.music.MusicViewScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationGraph(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -28,9 +31,9 @@ fun NavigationGraph(modifier: Modifier = Modifier) {
         }
 
         composable<MusicDetailScreen> {
-            val args = it.toRoute<MusicDetailScreen>().musicId
+            val id = it.toRoute<MusicDetailScreen>().musicId
             MusicViewScreen(
-                musicId = args
+                musicId = id
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.coroutineapp.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,11 +18,12 @@ import com.example.coroutineapp.ui.theme.lightGrey
 @Composable
 fun Bar(
     height: Dp,
-    width: Dp = 0.dp,
+    width: Dp,
     modifier: Modifier = Modifier,
     backgroundColor: Color,
     content: @Composable () -> Unit = {}
 ) {
+    Log.d("bar width", width.toString())
     Box(
         modifier = modifier
             .width(width)
