@@ -23,7 +23,6 @@ fun Bar(
     backgroundColor: Color,
     content: @Composable () -> Unit = {}
 ) {
-    Log.d("bar width", width.toString())
     Box(
         modifier = modifier
             .width(width)

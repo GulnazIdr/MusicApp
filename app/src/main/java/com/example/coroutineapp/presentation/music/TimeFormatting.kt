@@ -8,5 +8,4 @@ fun Int.formatDuration(): String {
     val minutes = TimeUnit.MILLISECONDS.toMinutes(this.toLong())
     val seconds = TimeUnit.MILLISECONDS.toSeconds(this.toLong()) % 60
     return "0$minutes:0${seconds}"
-    //return String.format("%d:%02d", minutes, seconds)
 }

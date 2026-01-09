@@ -34,7 +34,6 @@ fun MusicManager(
     modifier: Modifier = Modifier
 ) {
     var isMusicPlaying by remember { mutableStateOf(isPlaying) }
-    Log.d("damn", "$isMusicPlaying $isPlaying")
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -54,8 +53,10 @@ fun MusicManager(
             Row(
                 modifier = Modifier
                     .clickable(onClick = {
-                        onStopMusic()
                         isMusicPlaying = false
+                        Log.d("click happened", "")
+                        onStopMusic()
+                        Log.d("click happened2", "")
                     })
             ) {
                 VerticalDivider(

@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.coroutineapp.presentation.main.MainLayerScreen
-import com.example.coroutineapp.presentation.music.MusicViewScreen
+import com.example.coroutineapp.presentation.music.screens.MusicViewScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

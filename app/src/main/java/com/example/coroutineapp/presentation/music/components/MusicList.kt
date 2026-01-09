@@ -2,19 +2,15 @@ package com.example.coroutineapp.presentation.music.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.coroutineapp.presentation.MusicViewModel
 import com.example.coroutineapp.presentation.models.MusicUI
-import com.example.coroutineapp.presentation.music.MusicViewScreen
 
 @Composable
 fun MusicList(

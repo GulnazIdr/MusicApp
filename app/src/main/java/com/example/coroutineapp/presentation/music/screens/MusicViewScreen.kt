@@ -1,10 +1,6 @@
-package com.example.coroutineapp.presentation.music
+package com.example.coroutineapp.presentation.music.screens
 
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,6 +31,8 @@ import com.example.coroutineapp.presentation.MusicViewModel
 import com.example.coroutineapp.presentation.music.components.MusicDurationBar
 import com.example.coroutineapp.presentation.music.components.MusicManager
 import com.example.coroutineapp.presentation.music.components.SoundManager
+import java.util.Timer
+import java.util.TimerTask
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -46,17 +43,14 @@ fun MusicViewScreen(
     val musicUI = musicViewModel.getMusicById(musicId)
     val isMusicPlaying = musicViewModel.getPlayingState()
 
-    val query: Uri =  if(Build.VERSION.SDK_INT >= 29)
-        MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
-    else
-        MediaStore.Audio.Media.getContentUri("external")
-
     var currentTime by remember { mutableIntStateOf(0) }
-    val mediaPlayer: MediaPlayer = MediaPlayer.create(LocalContext.current, query)
 
-    mediaPlayer.setOnPreparedListener {
-        Log.d("durationd", it.duration.toString())
-    }
+    Timer().schedule(object : TimerTask(){
+        override fun run() {
+            if(musicViewModel.getPlayingState())
+                currentTime = musicViewModel.getCurrentPosition()
+        }
+    }, 0, 1)
 
     Column(
         modifier = Modifier
@@ -106,8 +100,8 @@ fun MusicViewScreen(
 
             MusicManager(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                onStartMusic = {mediaPlayer.start()},
-                onStopMusic = {musicViewModel.pauseMusic()},
+                onStartMusic = { musicViewModel.playMusic() },
+                onStopMusic = {musicViewModel.provide().pause()},
                 isPlaying = isMusicPlaying
             )
 
@@ -117,9 +111,8 @@ fun MusicViewScreen(
                 musicDuration = musicUI.duration,
                 currentTime = currentTime,
                 onValueChanged = { value ->
-                    Log.d("value1", value.toString())
-                    mediaPlayer.seekTo(value.toLong(), MediaPlayer.SEEK_CLOSEST)
-                    currentTime = value
+                    musicViewModel.seekTo(value)
+                    currentTime =  value
                 }
             )
 

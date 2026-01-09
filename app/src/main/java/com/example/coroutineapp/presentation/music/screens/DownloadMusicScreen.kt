@@ -1,9 +1,7 @@
-package com.example.coroutineapp.presentation.music
+package com.example.coroutineapp.presentation.music.screens
 
-import android.webkit.WebView
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable

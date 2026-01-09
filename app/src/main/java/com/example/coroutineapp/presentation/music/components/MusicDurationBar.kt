@@ -34,7 +34,7 @@ fun MusicDurationBar(
             onValueChange = {value->
                 onValueChanged((value*maxDuration).toInt())
             },
-            paddingValues = PaddingValues(horizontal = 20.dp)
+            paddingValues = PaddingValues(horizontal = 40.dp)
         )
 
         Spacer(modifier = Modifier.height(10.dp))

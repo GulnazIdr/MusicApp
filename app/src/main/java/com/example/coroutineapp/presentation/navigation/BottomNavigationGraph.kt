@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.coroutineapp.presentation.music.DownloadMusicScreen
-import com.example.coroutineapp.presentation.music.MusicListScreen
+import com.example.coroutineapp.presentation.music.screens.DownloadMusicScreen
+import com.example.coroutineapp.presentation.music.screens.MusicListScreen
 import com.example.coroutineapp.presentation.profile.ProfileScreen
 
 @Composable

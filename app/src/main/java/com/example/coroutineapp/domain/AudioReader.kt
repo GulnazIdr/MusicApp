@@ -1,4 +1,4 @@
-package com.example.coroutineapp.data
+package com.example.coroutineapp.domain
 
 import android.Manifest
 import android.content.ContentUris
@@ -10,20 +10,18 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.coroutineapp.data.models.MusicDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.util.logging.Logger
 import javax.inject.Inject
 
 class AudioReader @Inject constructor(
     private val context: Context
 ) {
-    val scope = CoroutineScope( SupervisorJob() + Dispatchers.IO)
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val audioFiles = mutableListOf<MusicDto>()
 
     fun getFiles(): List<MusicDto>{
@@ -63,7 +61,6 @@ class AudioReader @Inject constructor(
                 val id = cursor.getLong(idCol)
                 val nameField = cursor.getString(nameCol)
                 val artist = cursor.getString(artistCol)
-              //  Log.d("duration check2", cursor.getString(durationCol).toString())
                 val duration = cursor.getInt(durationCol)
                 val uri = ContentUris.withAppendedId(queryUri, id) //file's path queryUri + id
 
@@ -86,7 +83,7 @@ class AudioReader @Inject constructor(
     fun loadBitmapIfNeeded(context: Context, index: Int) {
         if (audioFiles[index].cover != null) return
 
-        scope.launch{
+        scope.launch {
             val bitmap = getAlbumArt(context, audioFiles[index].contentUri)
             audioFiles[index] = audioFiles[index].copy(cover = bitmap)
         }

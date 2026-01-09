@@ -1,4 +1,4 @@
-package com.example.coroutineapp.presentation.music
+package com.example.coroutineapp.domain
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -8,15 +8,14 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.MediaController
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.mutableStateOf
 import javax.inject.Inject
 
-class AudioFocusListener @Inject constructor(
-    context: Context,
-){
-    private val _isPlaying = mutableStateOf(false)
-    val isPlaying = _isPlaying
+class AudioManager @Inject constructor(
+    context: Context
+): MediaController.MediaPlayerControl {
 
     val query: Uri =  if(Build.VERSION.SDK_INT >= 29)
         MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
@@ -24,24 +23,45 @@ class AudioFocusListener @Inject constructor(
         MediaStore.Audio.Media.getContentUri("external")
 
     val mediaPlayer: MediaPlayer = MediaPlayer.create(context, query)
+
+    override fun getCurrentPosition() = mediaPlayer.currentPosition
+
+    override fun getDuration() = mediaPlayer.duration
+
+    override fun isPlaying() = mediaPlayer.isPlaying
+
+    override fun pause() {
+        Log.d("click happened4", "")
+
+        mediaPlayer.pause()
+        pauseAudio()
+        Log.d("click happened5", "")
+    }
+
+    override fun seekTo(p0: Int) {
+        mediaPlayer.seekTo(p0)
+    }
+
+    override fun start() {
+        mediaPlayer.start()
+    }
+
+    fun provideMedia() = mediaPlayer
+
     private val audioFocusListener = object : AudioManager.OnAudioFocusChangeListener{
         override fun onAudioFocusChange(focusChange: Int) {
             when (focusChange) {
                 AudioManager.AUDIOFOCUS_GAIN -> {
-                    mediaPlayer.start()
-                    _isPlaying.value = true
+                    start()
                 }
                 AudioManager.AUDIOFOCUS_LOSS -> {
-                    mediaPlayer.stop()
-                    _isPlaying.value = false
+                    stopAudio()
                 }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                    mediaPlayer.pause()
-                    _isPlaying.value = false
+                    pause()
                 }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                     mediaPlayer.setVolume(0.2f, 0.2f)
-                    _isPlaying.value = true
                 }
             }
         }
@@ -63,37 +83,34 @@ class AudioFocusListener @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun requestFocus(){
-        val res = audioManager.requestAudioFocus(focusRequest)
-
-        val focusLock = Any()
-        synchronized(focusLock) {
-            when (res) {
-                AudioManager.AUDIOFOCUS_REQUEST_FAILED ->{
-                    _isPlaying.value = false
-                }
-                AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
-                    mediaPlayer.start()
-                    _isPlaying.value = true
-                }
-                AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
-                    _isPlaying.value = false
-                }
-                else -> {
-                    _isPlaying.value = false
-                }
-            }
-        }
+        audioManager.requestAudioFocus(focusRequest)
     }
 
-    fun pauseAudio(){
-        mediaPlayer.pause()
-        _isPlaying.value = false
+    private fun pauseAudio(){
         audioManager.abandonAudioFocus(audioFocusListener)
     }
 
-    fun stopAudio(){
+    private fun stopAudio(){
         mediaPlayer.stop()
-        _isPlaying.value = false
         audioManager.abandonAudioFocus(audioFocusListener)
+    }
+    override fun canPause(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun canSeekBackward(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun canSeekForward(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAudioSessionId(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun getBufferPercentage(): Int {
+        TODO("Not yet implemented")
     }
 }

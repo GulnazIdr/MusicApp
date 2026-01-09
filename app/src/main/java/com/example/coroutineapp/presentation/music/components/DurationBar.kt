@@ -1,5 +1,6 @@
 package com.example.coroutineapp.presentation.music.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -44,6 +45,7 @@ fun DurationBar(
         var horizontalPadding = 0.dp
 
         var currentPercent by remember { mutableFloatStateOf(initialValue) }
+        Log.d("value2", initialValue.toString())
         currentPercent = initialValue
 
         var currentVolume by remember { mutableFloatStateOf(currentPercent/100) }
@@ -60,10 +62,13 @@ fun DurationBar(
         var sliderOffset by remember { mutableStateOf(valueWidth) }
         sliderOffset = valueWidth
 
+        //Spacer
         Box {
             Box(
                 modifier = Modifier
+                    .padding(paddingValues ?: PaddingValues())
                     .size(15.dp)
+
                     .offset(x = sliderOffset, y = 0.dp)
                     .zIndex(1f)
                     .clip(CircleShape)
@@ -71,11 +76,10 @@ fun DurationBar(
                     .draggable(
                         orientation = Orientation.Horizontal,
                         state = rememberDraggableState { delta ->
-//                            valueWidth += delta.dp
-                            if (delta < 0 && currentVolume > range.start) {
+                            if (delta < 0 && currentPercent > 0 && currentVolume > range.start) {
                                 currentVolume -= 0.1f
                                 valueWidth -= 1.dp
-                            } else if (delta > 0 && currentVolume < range.endInclusive) {
+                            } else if (delta > 0 && currentPercent < 100 && currentVolume < range.endInclusive) {
                                 currentVolume += 0.1f
                                 valueWidth += 1.dp
                             }
