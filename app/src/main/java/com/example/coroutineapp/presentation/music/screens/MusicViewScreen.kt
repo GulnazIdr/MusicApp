@@ -33,6 +33,7 @@ import com.example.coroutineapp.presentation.music.components.MusicManager
 import com.example.coroutineapp.presentation.music.components.SoundManager
 import java.util.Timer
 import java.util.TimerTask
+import java.util.concurrent.Executors
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -45,12 +46,12 @@ fun MusicViewScreen(
 
     var currentTime by remember { mutableIntStateOf(0) }
 
-    Timer().schedule(object : TimerTask(){
-        override fun run() {
-            if(musicViewModel.getPlayingState())
-                currentTime = musicViewModel.getCurrentPosition()
-        }
-    }, 0, 1)
+//    Timer().schedule(object : TimerTask(){
+//        override fun run() {
+//            if(musicViewModel.getPlayingState())
+//                currentTime = musicViewModel.getCurrentPosition()
+//        }
+//    }, 0, 1)
 
     Column(
         modifier = Modifier
@@ -100,8 +101,8 @@ fun MusicViewScreen(
 
             MusicManager(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                onStartMusic = { musicViewModel.playMusic() },
-                onStopMusic = {musicViewModel.provide().pause()},
+                onStartMusic = { musicViewModel.playMusic(musicId) },
+                onStopMusic = {musicViewModel.pauseMusic()},
                 isPlaying = isMusicPlaying
             )
 

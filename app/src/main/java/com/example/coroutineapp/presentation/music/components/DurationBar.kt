@@ -45,7 +45,6 @@ fun DurationBar(
         var horizontalPadding = 0.dp
 
         var currentPercent by remember { mutableFloatStateOf(initialValue) }
-        Log.d("value2", initialValue.toString())
         currentPercent = initialValue
 
         var currentVolume by remember { mutableFloatStateOf(currentPercent/100) }

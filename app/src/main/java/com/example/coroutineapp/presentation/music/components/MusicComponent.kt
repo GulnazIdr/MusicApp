@@ -1,11 +1,9 @@
 package com.example.coroutineapp.presentation.music.components
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,9 +32,6 @@ import com.example.coroutineapp.R
 import com.example.coroutineapp.presentation.MusicViewModel
 import com.example.coroutineapp.presentation.models.MusicUI
 import com.example.coroutineapp.ui.theme.lightGrey
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -54,6 +46,8 @@ fun MusicComponent(
     val musicName = musicUI.name
     val artistName = musicUI.artistName
 
+    val isMusicPlaying = musicViewModel.getPlayingState()
+
     val imageModifier = Modifier
         .fillMaxHeight()
         .clip(RoundedCornerShape(10.dp))
@@ -65,7 +59,10 @@ fun MusicComponent(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
-                        musicViewModel.playMusic()
+                        if (isMusicPlaying)
+                            musicViewModel.pauseMusic()
+                        else
+                            musicViewModel.playMusic(musicUI.id)
                     },
                     onDoubleTap = {
                         onMusic(musicUI.id)

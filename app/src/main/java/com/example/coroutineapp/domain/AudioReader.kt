@@ -10,22 +10,18 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.coroutineapp.data.models.MusicDto
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AudioReader @Inject constructor(
     private val context: Context
 ) {
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val audioFiles = mutableListOf<MusicDto>()
 
-    fun getFiles(): List<MusicDto>{
-        if (audioFiles.isNotEmpty()) return audioFiles
+    fun getFiles(isUpdated: Boolean): List<MusicDto>{
+        if (audioFiles.isNotEmpty() && !isUpdated) return audioFiles
 
         val skipQuery =
             if(Build.VERSION.SDK_INT <= 32)
@@ -63,7 +59,6 @@ class AudioReader @Inject constructor(
                 val artist = cursor.getString(artistCol)
                 val duration = cursor.getInt(durationCol)
                 val uri = ContentUris.withAppendedId(queryUri, id) //file's path queryUri + id
-
                 if(nameField != null){
                     val name = nameField
                             .substringAfter('-')
@@ -72,21 +67,15 @@ class AudioReader @Inject constructor(
                             .replace('_', ' ')
                             .replaceAfterLast('_', "")
                             .replaceAfterLast(' ', "")
-                    audioFiles.add(MusicDto(id, name, artist, duration, null, uri))
+
+                    audioFiles.add(MusicDto(id, name, artist, duration,
+                        getAlbumArt(context, uri), uri))
                 }
             }
         }
 
+        Log.d("music4", "${audioFiles.size}")
         return audioFiles
-    }
-
-    fun loadBitmapIfNeeded(context: Context, index: Int) {
-        if (audioFiles[index].cover != null) return
-
-        scope.launch {
-            val bitmap = getAlbumArt(context, audioFiles[index].contentUri)
-            audioFiles[index] = audioFiles[index].copy(cover = bitmap)
-        }
     }
 
     private fun getAlbumArt(context: Context, uri: Uri): Bitmap?{
