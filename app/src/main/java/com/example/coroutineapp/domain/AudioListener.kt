@@ -62,6 +62,8 @@ class AudioListener @Inject constructor(
         mediaPlayer.stop()
     }
 
+    fun reset() = mediaPlayer.reset()
+
     fun setVolume(left: Float, right: Float){
         mediaPlayer.setVolume(left, right)
     }

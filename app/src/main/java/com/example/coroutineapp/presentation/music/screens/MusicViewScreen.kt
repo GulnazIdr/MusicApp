@@ -1,6 +1,7 @@
 package com.example.coroutineapp.presentation.music.screens
 
 import android.os.Build
+import android.os.Handler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,11 +32,8 @@ import com.example.coroutineapp.presentation.MusicViewModel
 import com.example.coroutineapp.presentation.music.components.MusicDurationBar
 import com.example.coroutineapp.presentation.music.components.MusicManager
 import com.example.coroutineapp.presentation.music.components.SoundManager
-import java.util.Timer
-import java.util.TimerTask
-import java.util.concurrent.Executors
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun MusicViewScreen(
     musicId: Long,
@@ -52,6 +50,8 @@ fun MusicViewScreen(
 //                currentTime = musicViewModel.getCurrentPosition()
 //        }
 //    }, 0, 1)
+
+    var handler = Handler()
 
     Column(
         modifier = Modifier

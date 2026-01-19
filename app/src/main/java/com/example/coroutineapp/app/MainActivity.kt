@@ -27,7 +27,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CoroutineAppTheme {
-                NavigationGraph()
+                NavigationGraph(
+                    context = this
+                )
             }
         }
     }

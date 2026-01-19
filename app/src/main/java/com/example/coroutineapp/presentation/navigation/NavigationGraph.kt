@@ -1,5 +1,6 @@
 package com.example.coroutineapp.presentation.navigation
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -13,7 +14,7 @@ import com.example.coroutineapp.presentation.music.screens.MusicViewScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavigationGraph(modifier: Modifier = Modifier) {
+fun NavigationGraph(   context: Context,modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     fun navigateAndPop(destination: Destination, pop: Destination){
@@ -26,7 +27,8 @@ fun NavigationGraph(modifier: Modifier = Modifier) {
     ){
         composable<MainLayerScreen> {
             MainLayerScreen(
-                onMusic = {navigateAndPop(MusicDetailScreen(it), MainLayerScreen)}
+                onMusic = {navigateAndPop(MusicDetailScreen(it), MainLayerScreen)},
+                context = context
             )
         }
 

@@ -78,7 +78,8 @@ fun DurationBar(
                             if (delta < 0 && currentPercent > 0 && currentVolume > range.start) {
                                 currentVolume -= 0.1f
                                 valueWidth -= 1.dp
-                            } else if (delta > 0 && currentPercent < 100 && currentVolume < range.endInclusive) {
+                            } else if (delta > 0 &&
+                                currentPercent < 100 && currentVolume < range.endInclusive) {
                                 currentVolume += 0.1f
                                 valueWidth += 1.dp
                             }

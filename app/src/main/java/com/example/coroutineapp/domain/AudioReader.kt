@@ -18,10 +18,12 @@ import javax.inject.Inject
 class AudioReader @Inject constructor(
     private val context: Context
 ) {
-    val audioFiles = mutableListOf<MusicDto>()
+    var audioFiles = mutableListOf<MusicDto>()
 
     fun getFiles(isUpdated: Boolean): List<MusicDto>{
-        if (audioFiles.isNotEmpty() && !isUpdated) return audioFiles
+        if(isUpdated) audioFiles = mutableListOf<MusicDto>()
+        else
+            if (audioFiles.isNotEmpty()) return audioFiles
 
         val skipQuery =
             if(Build.VERSION.SDK_INT <= 32)
@@ -45,9 +47,12 @@ class AudioReader @Inject constructor(
             MediaStore.Files.FileColumns.DURATION
         ) //projection[0] - _id, projection[1] - _display_name
 
+        Log.d("namecol", "$queryUri, $projection")
+
         context.contentResolver.query(
             queryUri, projection, null, null, null
         )?.use { cursor ->
+
             val idCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
             val nameCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
             val artistCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.ARTIST)
@@ -74,7 +79,6 @@ class AudioReader @Inject constructor(
             }
         }
 
-        Log.d("music4", "${audioFiles.size}")
         return audioFiles
     }
 

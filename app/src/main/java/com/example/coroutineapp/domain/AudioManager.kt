@@ -7,13 +7,15 @@ import android.media.AudioManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.coroutineapp.domain.AudioListener
 import javax.inject.Inject
 
 class AudioManager @Inject constructor(
     context: Context,
     private val audioListener: AudioListener
 ) {
+    private var tempMusicId: Long = 0
+    private var isPrepared = false
+
     fun getCurrentPosition() = audioListener.currentPosition
 
     fun isPlaying(): Boolean = audioListener.isPlaying
@@ -23,12 +25,22 @@ class AudioManager @Inject constructor(
     }
 
     fun start(musicId: Long) {
-        audioListener.musicId = musicId
-        audioListener.start()
-    }
+        tempMusicId =
+            if(tempMusicId != musicId){
+                isPrepared = false
+                musicId
+            }
+            else{
+                isPrepared = true
+                tempMusicId
+            }
 
-    fun startPrepared(){
-        audioListener.startPrepared()
+        if (isPrepared) audioListener.startPrepared()
+        else {
+            audioListener.reset()
+            audioListener.musicId = musicId
+            audioListener.start()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -44,7 +56,7 @@ class AudioManager @Inject constructor(
 
     fun pauseAudio(){
         audioListener.pause()
-        audioManager.abandonAudioFocus(audioFocusListener)
+        //audioManager.abandonAudioFocus(audioFocusListener)
     }
 
     fun stopAudio(){

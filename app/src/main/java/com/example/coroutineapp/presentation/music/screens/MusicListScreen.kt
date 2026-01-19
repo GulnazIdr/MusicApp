@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -11,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.coroutineapp.R
 import com.example.coroutineapp.presentation.MusicViewModel
 import com.example.coroutineapp.presentation.common.CommonTopAppBar
@@ -25,7 +26,7 @@ fun MusicListScreen(
     onMusic: (musicId: Long) -> Unit,
     musicViewModel: MusicViewModel = hiltViewModel()
 ) {
-    val musicUIList = musicViewModel.fetchedAudioList
+    val musicUIList = musicViewModel.fetchedAudioList.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -33,11 +34,12 @@ fun MusicListScreen(
             .padding(innerPadding)
     ) {
         CommonTopAppBar(
-            title = stringResource(R.string.music)
+            title = stringResource(R.string.music),
+            modifier = Modifier.clickable(onClick = {musicViewModel.fetchAudioFromDevice(true)})
         )
 
         MusicList(
-            musicUIList = musicUIList,
+            musicUIList = musicUIList.value,
             onMusic = {onMusic(it)}
         )
     }

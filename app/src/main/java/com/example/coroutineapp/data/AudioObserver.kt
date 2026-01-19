@@ -15,8 +15,9 @@ class AudioObserver @Inject constructor(
     private val directoryChangeUseCase: DirectoryChangeUseCase
 ) : ContentObserver(Handler(Looper.getMainLooper())) {
 
-    override fun onChange(selfChange: Boolean) {
-        super.onChange(selfChange)
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun onChange(selfChange: Boolean, uris: Collection<Uri?>, flags: Int) {
+        super.onChange(selfChange, uris, flags)
         directoryChangeUseCase.directoryUpdated()
     }
 }

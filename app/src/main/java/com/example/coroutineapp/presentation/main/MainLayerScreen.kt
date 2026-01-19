@@ -1,5 +1,6 @@
 package com.example.coroutineapp.presentation.main
 
+import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.Scaffold
@@ -14,9 +15,11 @@ import com.example.coroutineapp.presentation.common.BottomBar
 import com.example.coroutineapp.presentation.models.MusicUI
 import com.example.coroutineapp.presentation.navigation.BottomNavState
 import com.example.coroutineapp.presentation.navigation.BottomNavigationGraph
+import dagger.hilt.android.internal.Contexts
 
 @Composable
 fun MainLayerScreen(
+    context: Context,
     onMusic: (musicId: Long) -> Unit
 ) {
     val navController = rememberNavController()
@@ -38,6 +41,7 @@ fun MainLayerScreen(
             ),
             navController = navController,
             onMusic = {onMusic(it)},
+            context = context
         )
     }
 }

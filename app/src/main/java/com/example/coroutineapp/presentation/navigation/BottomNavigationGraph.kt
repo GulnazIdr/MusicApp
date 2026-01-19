@@ -1,5 +1,6 @@
 package com.example.coroutineapp.presentation.navigation
 
+import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -13,6 +14,7 @@ import com.example.coroutineapp.presentation.profile.ProfileScreen
 fun BottomNavigationGraph(
     navController: NavHostController,
     onMusic: (musicId: Long) -> Unit,
+    context: Context,
     innerPadding: PaddingValues
 ) {
     NavHost(
@@ -28,7 +30,8 @@ fun BottomNavigationGraph(
 
         composable<DownloadMusicScreen> {
             DownloadMusicScreen(
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                applicationContext = context
             )
         }
 
